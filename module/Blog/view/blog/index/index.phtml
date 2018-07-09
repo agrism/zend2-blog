@@ -1,0 +1,35 @@
+<h1>IndexController</h1>
+
+<?php
+
+foreach ($articles as $article) {
+    $category = $article->getCategory();
+    if ($category) {
+        $categoryName = $category->getCategoryName();
+    } else {
+        $categoryName = '';
+    }
+    if ($article->getIsPublic()) {
+        $isPublic = 'Yes';
+    } else {
+        $isPublic = 'No';
+    }
+
+
+    $url = $this->url('blog', ['action' => 'article', 'id' => $article->getId()]);
+    echo '<article class="panel panel-default">';
+    echo '<div class="page-header" style="margin-top:17px;">';
+    echo '<h4 style="padding-left: 30px;font-size: 25px;"><a style="color:black;" href="' . $url . '">' . $article->getTitle() . '</a></h4>';
+    echo '</div>';
+    echo '<div class="panel-body">';
+    echo $article->getShortArticleForBlog();
+    echo '</div>';
+    echo '<div class="panel-footer" style="height:45px;"><span style=""width:300px;float:left;">Category: '.$categoryName.'</span><a href="'.$url.'" style="float:right;">Read all</a></div>';
+    echo '</article>';
+}
+?>
+
+<?php
+    echo $this->paginationControl($articles, 'Sliding', 'pagination_control', ['route'=> 'blog']);
+
+?>

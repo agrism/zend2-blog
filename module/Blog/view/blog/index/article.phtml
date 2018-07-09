@@ -1,0 +1,9 @@
+<?php
+    echo '<article>';
+    echo '<div class="page-header">';
+    echo '<h1 style="font-size:2em">'.$article->getTitle().'</h1>';
+    echo '</div>';
+    echo '<div>';
+    echo $article->getFullArticle();
+    echo '</div>';
+    echo '</article>';

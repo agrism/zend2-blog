@@ -1,0 +1,49 @@
+<h1>Categories</h1>
+
+<a href="/admin/category/add/">Add Category</a>
+<?php
+
+$flash = $this->flashMessenger();
+$flash->setMessageOpenFormat('<div%s>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+            &times;
+            </button>
+            <ul><li>
+    ')
+    ->setMessageSeparatorString('</li<li>')
+    ->setMessageCloseString('</li></ul></div>');
+
+    echo $flash->render('error', ['alert', 'alert-dismissible', 'alert-danger']);
+    echo $flash->render('info', ['alert', 'alert-dismissible', 'alert-info']);
+    echo $flash->render('warning', ['alert', 'alert-dismissible', 'alert-warning']);
+    echo $flash->render('success', ['alert', 'alert-dismissible', 'alert-success']);
+
+?>
+
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>key</th>
+        <th>name</th>
+        <th>action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php
+    foreach ($categories as $category) {
+        echo "<tr>
+                    <td>{$category->getId()}</td>
+                    <td>{$category->getCategoryKey()}</td>
+                    <td>{$category->getCategoryName()}</td>
+                    <td><a href=" . $this->url('admin/category', ["action" => "edit", "id" => $category->getId()]) . ">Edit</a>";
+        echo '&nbsp;<a href="' . $this->url('admin/category', ["action" => "delete", "id" => $category->getId()]) .
+            '" onclick="if(confirm(\'delete?\')) {document.location =this.href ;} return false;">Delete</a></td>';
+        echo "</tr>";
+    }
+
+
+    ?>
+    </tbody>
+</table>

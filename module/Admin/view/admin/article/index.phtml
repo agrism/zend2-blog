@@ -1,0 +1,81 @@
+<h1>Articles</h1>
+
+<a href="/admin/article/add/">Add Article</a>
+<?php
+
+$flash = $this->flashMessenger();
+$flash->setMessageOpenFormat('<div%s>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+            &times;
+            </button>
+            <ul><li>
+    ')
+    ->setMessageSeparatorString('</li<li>')
+    ->setMessageCloseString('</li></ul></div>');
+
+echo $flash->render('error', ['alert', 'alert-dismissible', 'alert-danger']);
+echo $flash->render('info', ['alert', 'alert-dismissible', 'alert-info']);
+echo $flash->render('warning', ['alert', 'alert-dismissible', 'alert-warning']);
+echo $flash->render('success', ['alert', 'alert-dismissible', 'alert-success']);
+
+?>
+
+<table class="table table-stripped table-hover">
+    <tbody>
+    <tr>
+        <th>#</th>
+        <th>Category</th>
+        <th>Title</th>
+        <th>Article</th>
+        <th>Entry of article</th>
+        <th>Published</th>
+        <th>Action</th>
+    </tr>
+
+    <?php
+
+//    echo '<pre>';
+//    var_dump($articles);
+//    echo '</pre>';die;
+
+    foreach ($articles as $item) {
+        $category = $item->getCategory();
+        if ($category) {
+            $catName = $category->getCategoryName();
+        } else {
+            $catName = '';
+        }
+
+        if ($item->getIsPublic()) {
+            $isPublic = 'Yes';
+        } else {
+            $isPublic = 'No';
+
+        }
+
+        echo '<tr>
+                <td>'.$item->getId().'</td>
+                <td>'.$catName.'</td>
+                <td>'.$item->getTitle().'</td>
+                <td>'.$item->getArticleForTable().'</td>
+                <td>'.$item->getShortArticleForTable().'</td>
+                <td>'.$isPublic.'</td>
+                <td>
+                <a href="' . $this->url('admin/article', ["action" => "edit", "id" => $item->getId()]) .'">Edit</a>
+                &nbsp;<a href="' . $this->url('admin/article', ["action" => "delete", "id" => $item->getId()]) .'
+                " onclick="if(confirm(\'delete ?\')) {document.location=this.href ;} return false;">Delete</a></td>
+                </td>
+        
+        </tr>';
+    }
+    ?>
+    </tbody>
+</table>
+
+<?php
+    echo $this->paginationControl($articles,
+            'Sliding','pagination_control',
+    [
+            'route' => 'admin/article'
+    ]);
+?>
